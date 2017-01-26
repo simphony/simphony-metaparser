@@ -26,10 +26,12 @@ CUDS_KEYS:
     parent: CUBA.CUDS_ITEM
     CUBA.DESCRIPTION:
       default: ""
-      scope: CUBA.USER
     CUBA.NAME:
       default: ""
-      scope: CUBA.USER
+
+  CUDS:
+    definition: CUDS Container, a knowledge-based container of semantic concepts used to agglomerate relevant data and information.
+    parent: CUBA.CUDS_COMPONENT
 
 ######################################################
 # define the terminology used for computational models
@@ -74,8 +76,8 @@ CUDS_KEYS:
     definition: Material relation which together with the Physics equation gives the model equation
     parent: CUBA.MODEL_EQUATION
     CUBA.MATERIAL:
-      scope: CUBA.USER
       shape: (:)
+      default: []
 
   MATERIAL:
     definition: Definition of a material and its properties in the data container
@@ -86,6 +88,7 @@ CUDS_KEYS:
     parent: CUBA.CUDS_COMPONENT
     CUBA.CONDITION:
       shape: (:)
+      default: []
 
   CONDITION:
     definition: Condition on boundaries or model entities
@@ -140,7 +143,6 @@ CUDS_KEYS:
       default: CUBA.INCOMPRESSIBLE_FLUID_MODEL
     CUBA.THERMAL_MODEL:
       default: CUBA.ISOTHERMAL_MODEL
-      scope: CUBA.USER
     CUBA.TURBULENCE_MODEL:
       default: CUBA.LAMINAR_FLOW_MODEL
     CUBA.MULTIPHASE_MODEL:
@@ -148,8 +150,7 @@ CUDS_KEYS:
     CUBA.RHEOLOGY_MODEL:
       default: CUBA.NEWTONIAN_FLUID_MODEL
     CUBA.GRAVITY_MODEL:
-      scope: CUBA.USER
-      default:
+      default: CUBA.GRAVITY_MODEL
     CUBA.ELECTROSTATIC_MODEL:
       default: CUBA.CONSTANT_ELECTROSTATIC_FIELD_MODEL
 
@@ -286,7 +287,7 @@ CUDS_KEYS:
   ELECTROSTATIC_MODEL:
     definition: Electrostatic model
     parent: CUBA.PHYSICS_EQUATION
-    models: [CUBA.CFD, CUBA.MOLECULAR_DYNAMICS, CUBA.DEM]
+    models: []
 
 ###############################################################
 # Material Relations
@@ -301,7 +302,7 @@ CUDS_KEYS:
     parent: CUBA.INTERATOMIC_POTENTIAL
     models: [CUBA.ATOMISTIC]
     CUBA.MATERIAL:
-      shape: (2)
+      shape: [2]
 
   LENNARD_JONES_6_12:
     parent: CUBA.PAIR_POTENTIAL
@@ -344,6 +345,7 @@ CUDS_KEYS:
     models: [CUBA.ATOMISTIC]
     CUBA.COHESION_ENERGY_DENSITY:
       default: 0.0
+
   THERMOSTAT:
     definition: A thermostat is a model that describes the thermal interaction of a material with the environment or a heat reservoir
     parent: CUBA.MATERIAL_RELATION
@@ -354,7 +356,7 @@ CUDS_KEYS:
     parent: CUBA.THERMOSTAT
     models: [CUBA.ATOMISTIC, CUBA.MESOSCOPIC]
     CUBA.TEMPERATURE:
-      shape: (2)
+      shape: [2]
       default: [0.0, 0.0]
     CUBA.COUPLING_TIME:
       default: 1.0
@@ -364,7 +366,7 @@ CUDS_KEYS:
     parent: CUBA.THERMOSTAT
     models: [CUBA.ATOMISTIC, CUBA.MESOSCOPIC]
     CUBA.TEMPERATURE:
-      shape: (2)
+      shape: [2]
       default: [0.0, 0.0]
     CUBA.COUPLING_TIME:
       default: 0.0001
@@ -374,7 +376,7 @@ CUDS_KEYS:
     parent: CUBA.THERMOSTAT
     models: [CUBA.ATOMISTIC, CUBA.MESOSCOPIC]
     CUBA.TEMPERATURE:
-      shape: (2)
+      shape: [2]
       default: [0.0, 0.0]
     CUBA.COUPLING_TIME:
       default: 0.000001
@@ -385,9 +387,8 @@ CUDS_KEYS:
     models: [CUBA.CONTINUUM]
     CUBA.SURFACE_TENSION:
       default: 0.07
-      scope: CUBA.USER
     CUBA.MATERIAL:
-      shape: (2)
+      shape: [2]
 
 ######################################################
 # Conditions on Boundaries
@@ -440,37 +441,37 @@ CUDS_KEYS:
 ##################################################
 
   COMPUTATIONAL_METHOD:
-    parent: CUBA.CUDS_COMPONENT
+    parent: CUBA.SOLVER_PARAMETER
     definition: A computational method according to the RoMM
-    physics_equation: []
+    physics_equations: []
 
   DEM:
     parent: CUBA.COMPUTATIONAL_METHOD
     definition: Discrete element method
-    physics_equation: [CUBA.GRANULAR_DYNAMICS]
+    physics_equations: [CUBA.GRANULAR_DYNAMICS]
 
   FVM:
     parent: CUBA.COMPUTATIONAL_METHOD
     definition: Finite volume method
-    physics_equation: [CUBA.CFD]
+    physics_equations: [CUBA.CFD]
 
   FEM:
     parent: CUBA.COMPUTATIONAL_METHOD
     definition: Finite element method
-    physics_equation: [CUBA.CFD]
+    physics_equations: [CUBA.CFD]
 
   SPH:
     parent: CUBA.COMPUTATIONAL_METHOD
     definition: Smooth particle hydrodynamics
-    physics_equation: [CUBA.CFD]
+    physics_equations: [CUBA.CFD]
 
   VERLET:
     parent: CUBA.COMPUTATIONAL_METHOD
     definition: Newtonian dynamics integration using verlet algorithm
-    physics_equation: [CUBA.MOLECULAR_DYNAMICS]
+    physics_equations: [CUBA.MOLECULAR_DYNAMICS]
 
   INTEGRATION_TIME:
-    parent: CUBA.COMPUTATIONAL_METHOD
+    parent: CUBA.SOLVER_PARAMETER
     definition: the current time, time step, and final time for a simulation stored on each cuds (a specific state).
     CUBA.CURRENT:
       default: 0.0
@@ -480,14 +481,14 @@ CUDS_KEYS:
       default: 0.0
 
   INTEGRATION_STEP:
-    parent: CUBA.COMPUTATIONAL_METHOD
+    parent: CUBA.SOLVER_PARAMETER
     definition: the current step, integration step, and final number of steps for a simulation stored on each cuds (a specific state).
     CUBA.CURRENT:
       default: 0
     CUBA.SIZE:
-      defaut: 0
+      default: 0
     CUBA.FINAL:
-      defaut: 0
+      default: 0
 
 ##############################################
 ## Data Sets Metadata
@@ -496,7 +497,7 @@ CUDS_KEYS:
     parent: CUBA.CUDS_COMPONENT
     definition: Space basis vectors (row wise)
     CUBA.VECTOR:
-      shape: (3, 3)
+      shape: [3]
       default: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
 
   ORIGIN:
@@ -504,18 +505,16 @@ CUDS_KEYS:
     parent: CUBA.CUDS_COMPONENT
     CUBA.POSITION:
       default: [0, 0, 0]
-      scope: CUBA.USER
 
   BOX:
-    definition: A simple hexahedron (with six faces) simulation box defined by the three vectors and three directions. The condition should be specified for each direction (two faces at a time).
+    definition: A simple hexahedron simulation box defining six boundary faces that are defined by three box vectors. The same boundary condition should be specified for each direction (two faces at a time).
     parent: CUBA.BOUNDARY
     CUBA.VECTOR:
-      shape: (3,3)
-      default: [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
-      scope: CUBA.USER
+      shape: [3]
+      default: [[1, 0, 0], [0, 1, 0], [0, 0, 1]]
     CUBA.CONDITION:
-      shape: (3)
-      default:
+      shape: [3]
+      default: [CUBA.EMPTY, CUBA.EMPTY, CUBA.EMPTY]
 
   POINT:
     definition: A point in a 3D space system
@@ -570,7 +569,7 @@ CUDS_KEYS:
 
   PARTICLES:
     definition: A collection of particles
-    parent: CUBA.CUDS_COMPONENT
+    parent: CUBA.DATA_SET
     CUBA.PARTICLE:
       shape: (:)
     CUBA.BOND:
@@ -578,7 +577,7 @@ CUDS_KEYS:
 
   MESH:
     definition: A mesh
-    parent: CUBA.CUDS_COMPONENT
+    parent: CUBA.DATA_SET
     CUBA.POINT:
       shape: (:)
     CUBA.EDGE:
@@ -590,18 +589,18 @@ CUDS_KEYS:
 
   LATTICE:
     definition: A lattice
-    parent: CUBA.CUDS_COMPONENT
+    parent: CUBA.DATA_SET
 
   BRAVAIS_LATTICE:
     definition: A Bravais lattice
     parent: CUBA.LATTICE
     CUBA.SIZE:
-      shape: (3)
+      shape: [3]
       default: [1, 1, 1]
     CUBA.ORIGIN:
     CUBA.PRIMITIVE_CELL:
     CUBA.LATTICE_PARAMETER:
-      shape: (3)
+      shape: [3]
       default: [1.0, 1.0, 1.0]
 
   CUBIC_LATTICE:
@@ -667,7 +666,6 @@ CUDS_KEYS:
     parent: CUBA.CUDS_ITEM
     definition: Represents a software tool which is used to solve the model or in pre/post processing
     CUBA.VERSION:
-      default:
 
   ENGINE:
     parent: CUBA.SOFTWARE_TOOL
@@ -680,7 +678,6 @@ CUDS_KEYS:
     parent: CUBA.CUDS_ITEM
     definition: Provides a physics equation and methods that engines provides to solve them
     CUBA.PHYSICS_EQUATION:
-      shape: (1)
       scope: CUBA.SYSTEM
     CUBA.COMPUTATIONAL_METHOD:
       shape: (:)

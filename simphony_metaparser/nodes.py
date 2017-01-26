@@ -158,8 +158,8 @@ class CUDSItem(HasStrictTraits):
     dependencies, an identity and properties.
     """
     name = QualifiedCUBAKey()
-    parent = This
-    children = List(This)
+    parent = Either(This(), None)
+    children = List(This())
     property_entries = Dict(Str,
                             Either(FixedPropertyEntry, VariablePropertyEntry))
 
@@ -174,6 +174,9 @@ class CUDSItem(HasStrictTraits):
             value = getattr(cuds_entry, name)
             if name == "name":
                 value = with_cuba_prefix(value)
+            elif name == "parent":
+                continue
+
             d[name] = value
 
         return cls(**d)

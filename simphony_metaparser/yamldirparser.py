@@ -1,5 +1,6 @@
 import os
 
+from simphony_metaparser.utils import with_cuba_prefix
 from . import utils
 from .nodes import CUBADataType, CUDSItem, \
     VariablePropertyEntry, FixedPropertyEntry
@@ -67,26 +68,26 @@ class YamlDirParser:
             parsed_cuba,
             parsed_metadata
         )
-        ontology.data_types = cuba_symtable.values()
+        ontology.data_types = list(cuba_symtable.values())
 
         # Build the tree, and in the meantime run additional checks
         root = None
 
         for entry in parsed_metadata.entries.values():
-            cur_name = entry.name
-            parent_name = entry.parent
+            cur_name = with_cuba_prefix(entry.name)
             cur_item = cuds_symtable[cur_name]
 
-            if parent_name is None:
+            if entry.parent is None:
                 cur_item.parent = None
                 if root is not None:
                     raise ParsingError("Found two CUDS items with no parent "
                                        "specification (hierarchy roots)")
                 root = cur_item
-
-            parent_item = cuds_symtable[parent_name]
-            cur_item.parent = parent_item
-            parent_item.children.append(cur_item)
+            else:
+                parent_name = with_cuba_prefix(entry.parent)
+                parent_item = cuds_symtable[parent_name]
+                cur_item.parent = parent_item
+                parent_item.children.append(cur_item)
 
         # We have the tree. Store it.
         ontology.root_cuds_item = root
@@ -140,7 +141,7 @@ def check_item_tree(ontology, cuba_symtable, cuds_symtable):
         stack.append(cur_frame)
 
         # collect the new names
-        for prop_name, prop in item.property_entries:
+        for prop_name, prop in item.property_entries.items():
             if isinstance(prop, VariablePropertyEntry):
                 # Check if the current variable properties are referring to
                 # something that is undefined
