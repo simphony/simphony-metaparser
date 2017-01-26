@@ -10,7 +10,7 @@ VERSION: "1.0"
 
 CUDS: Common Universal Data Structure
 
-Purpose: CUDS provides a semantic layer for the SimPhoNy metadata schema
+Purpose: CUDS provides
 
 Resources:
   CUDS 1.0 (1st Edition): http://simphony.eu/cuds/1.0/  # does not exist
@@ -84,4 +84,13 @@ class TestMetadataFileParser(unittest.TestCase):
 
     def test_parsing_template(self):
         content = six.StringIO(TEMPLATE)
-        self.parser.parse(content)
+        root = self.parser.parse(content)
+
+        self.assertEqual(root.header.version, "1.0")
+        self.assertEqual(root.header.purpose, "CUDS provides")
+        self.assertEqual(root.header.type, "CUDS")
+        self.assertEqual(len(root.entries), 9)
+        self.assertEqual(len(root.entries["CUDS_ITEM"].property_entries), 3)
+        self.assertEqual(root.entries["CUDS_ITEM"].parent, None)
+        self.assertEqual(root.entries["CUDS_COMPONENT"].parent,
+                         "CUBA.CUDS_ITEM")
