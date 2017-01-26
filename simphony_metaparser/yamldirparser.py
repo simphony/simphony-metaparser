@@ -145,7 +145,7 @@ def check_item_tree(ontology, cuba_symtable, cuds_symtable):
                 # Check if the current variable properties are referring to
                 # something that is undefined
                 if not (prop_name in cuds_symtable or
-                                prop_name in cuba_symtable):
+                        prop_name in cuba_symtable):
                     raise ParsingError(
                         "Property key {} of item {} is not"
                         " defined anywhere".format(prop_name, item.name))
@@ -181,4 +181,3 @@ def check_name_clash(item_name, fixed_names, variable_names):
                 "clashes with fixed property {} in "
                 "its hierarchy".format(
                     name, item_name, transformed_name))
-

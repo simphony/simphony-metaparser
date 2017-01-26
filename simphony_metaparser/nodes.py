@@ -206,4 +206,3 @@ class Ontology(HasStrictTraits):
     resources = Dict()
     data_types = List(CUBADataType)
     root_cuds_item = Instance(CUDSItem)
-
