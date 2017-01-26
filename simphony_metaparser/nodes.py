@@ -158,8 +158,8 @@ class CUDSItem(HasStrictTraits):
     dependencies, an identity and properties.
     """
     name = QualifiedCUBAKey()
-    parent = Either(This(), None)
-    children = List(This())
+    parent = Either(None, This)
+    children = List(This)
     property_entries = Dict(Str,
                             Either(FixedPropertyEntry, VariablePropertyEntry))
 
