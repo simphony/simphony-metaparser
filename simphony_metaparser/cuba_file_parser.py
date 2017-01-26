@@ -63,7 +63,7 @@ class CUBAFileParser:
         try:
             cuba_keys = cuba_data["CUBA_KEYS"]
         except KeyError:
-            raise ParsingError("Missing entry CUBA_KEYS")
+            raise ParsingError("Missing key CUBA_KEYS")
 
         if not isinstance(cuba_keys, dict):
             raise ParsingError(
