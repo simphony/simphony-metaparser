@@ -1,7 +1,6 @@
 from traits.api import (
     HasStrictTraits, TraitError, String, Enum, Str, Dict, List, Int,
     Either, Any, Instance, Property)
-from traits.trait_types import This
 
 from .utils import with_cuba_prefix
 from .flags import NoDefault
@@ -158,8 +157,8 @@ class CUDSItem(HasStrictTraits):
     dependencies, an identity and properties.
     """
     name = QualifiedCUBAKey()
-    parent = Either(None, This)
-    children = List(This)
+    parent = Instance("CUDSItem")
+    children = List(Instance("CUDSItem"))
     property_entries = Dict(Str,
                             Either(FixedPropertyEntry, VariablePropertyEntry))
 
