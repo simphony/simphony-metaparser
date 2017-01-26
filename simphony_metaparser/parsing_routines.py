@@ -36,8 +36,8 @@ def parse_header_info(data):
         type_ = "CUDS"
 
     if type_ is None:
-       raise ParsingError("Unable to find file type specification in header. "
-                          "Key CUBA or CUDS missing")
+        raise ParsingError("Unable to find file type specification in header. "
+                           "Key CUBA or CUDS missing")
 
     try:
         header = FileHeaderInfo(
