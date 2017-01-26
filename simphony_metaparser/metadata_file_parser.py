@@ -1,56 +1,15 @@
-import yaml
+from simphony_metaparser.base_file_parser import BaseFileParser
 
-from .nodes import File
-from .parsing_routines import parse_header_info, \
-    parse_cuds_entry
-from .exceptions import ParsingError
+from .parsing_routines import parse_cuds_entry
 
 
-class MetadataFileParser:
-    def parse(self, file_handle):
-        """Parses the content of the specified filename.
-        Returns a list of raw nodes for further processing.
+class MetadataFileParser(BaseFileParser):
 
-        Parameters
-        ----------
-        file_handle: str
-            Path of the file to parse
+    def entry_key(self):
+        return "CUDS_KEYS"
 
-        Returns
-        -------
-        list of raw metadata nodes.
-        """
-        cuds_data = yaml.safe_load(file_handle)
+    def expected_type(self):
+        return "CUDS"
 
-        file = File()
-        header = parse_header_info(cuds_data)
-
-        if header.type != "CUDS":
-            raise ParsingError("Unable to find file type marker for CUDS file")
-
-        if header.version != "1.0":
-            raise ParsingError("Unable to parse file version {}".format(
-                header.version))
-
-        try:
-            keys = cuds_data["CUDS_KEYS"]
-        except KeyError:
-            raise ParsingError("Missing entry CUDS_KEYS")
-
-        file.header = header
-        entries = {}
-        # We need to collect all cuds entities first, because in the file
-        # they are a dictionary, and they can be recovered in arbitrary order.
-        for name, data in keys.items():
-            try:
-                entry = parse_cuds_entry(name, data)
-            except Exception as e:
-                raise ParsingError("Unable to parse entry {} "
-                                   "in {}: {}".format(name,
-                                                      file_handle,
-                                                      str(e)))
-
-            entries[name] = entry
-
-        file.entries = entries
-        return file
+    def parse_entry(self, name, data):
+        return parse_cuds_entry(name, data)
