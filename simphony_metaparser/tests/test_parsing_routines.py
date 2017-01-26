@@ -1,15 +1,13 @@
 import os
 import unittest
 
-from simphony_metaedit.parsers.parsing_routines import parse_cuba_entry, \
+from simphony_metaparser.parsing_routines import parse_cuba_entry, \
     parse_cuds_entry, parse_shape, \
     parse_fixed_property_entry, parse_variable_property_entry
 
-from simphony_metaedit.nodes import VariablePropertyEntry, \
-    FixedPropertyEntry
-from simphony_metaedit.parsers.nodes import NoDefault, FixedPropertyEntry, \
-    VariablePropertyEntry
-from simphony_metaedit.parsers.exceptions import ParsingError
+from simphony_metaparser.nodes import VariablePropertyEntry, \
+    FixedPropertyEntry, NoDefault
+from simphony_metaparser.exceptions import ParsingError
 
 
 class TestParsingRoutines(unittest.TestCase):

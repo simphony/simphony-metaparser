@@ -1,9 +1,9 @@
 from traits.trait_errors import TraitError
 
-from simphony_metaedit.parsers.nodes import FixedPropertyEntry, \
+from .nodes import FixedPropertyEntry, \
     VariablePropertyEntry, FileHeaderInfo, CUBAEntry, CUDSEntry
-from simphony_metaedit.parsers.flags import NoDefault
-from simphony_metaedit.parsers.exceptions import ParsingError
+from .flags import NoDefault
+from .exceptions import ParsingError
 
 
 def parse_header_info(data):

@@ -1,7 +1,7 @@
 import yaml
 
-from simphony_metaedit.parsers.nodes import File
-from simphony_metaedit.parsers.parsing_routines import (
+from .nodes import File
+from .parsing_routines import (
     parse_header_info,
     parse_cuba_entry)
 from .exceptions import ParsingError

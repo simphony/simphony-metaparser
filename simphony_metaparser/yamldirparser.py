@@ -1,7 +1,7 @@
 import os
 
-from simphony_metaedit.parsers import utils
-from simphony_metaedit.parsers.nodes import CUBADataType, CUDSItem, \
+from . import utils
+from .nodes import CUBADataType, CUDSItem, \
     VariablePropertyEntry, FixedPropertyEntry
 from .cuba_file_parser import CUBAFileParser
 from .exceptions import ParsingError
