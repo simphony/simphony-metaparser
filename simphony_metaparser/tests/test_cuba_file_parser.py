@@ -17,7 +17,7 @@ CUBA: Common Unified Base Attributes
 Purpose: CUBA provides
 
 CUBA_KEYS:
-    UUID:
+    UID:
         definition: unique id
         length: 32
         type: string
