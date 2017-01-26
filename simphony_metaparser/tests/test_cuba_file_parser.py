@@ -67,7 +67,7 @@ class TestCUBAFileParser(unittest.TestCase):
         content = StringIO(
             _change_lines_starting_with(TEMPLATE, "VERSION", ""))
         with self.assertRaisesRegex(ParsingError,
-                                     "find file format version specifier"):
+                                    "find file format version specifier"):
             self.parser.parse(content)
 
         for version in ["hello", "[]"]:
@@ -88,7 +88,7 @@ class TestCUBAFileParser(unittest.TestCase):
                     "VERSION",
                     "VERSION: {}".format(version)))
             with self.assertRaisesRegex(ParsingError,
-                                         "Unable to parse file version"):
+                                        "Unable to parse file version"):
                 self.parser.parse(content)
 
     def test_parse_incorrect_cuba_marker(self):
@@ -97,8 +97,8 @@ class TestCUBAFileParser(unittest.TestCase):
         )
 
         with self.assertRaisesRegex(ParsingError,
-                                     "Unable to find file type "
-                                     "specification"):
+                                    "Unable to find file type "
+                                    "specification"):
             self.parser.parse(content)
 
     def test_no_cuba_keys(self):
@@ -141,7 +141,7 @@ class TestCUBAFileParser(unittest.TestCase):
         type: floatingpoint
 """)
         with self.assertRaisesRegex(ParsingError,
-                                     "but a value of 'floatingpoint'"):
+                                    "but a value of 'floatingpoint'"):
             self.parser.parse(content)
 
     def test_length_in_non_string(self):
@@ -153,7 +153,7 @@ class TestCUBAFileParser(unittest.TestCase):
         length: 5
 """)
         with self.assertRaisesRegex(ParsingError,
-                                     "not a string, and length must be None"):
+                                    "not a string, and length must be None"):
             self.parser.parse(content)
 
     def test_unrecognized_key_in_entry(self):
