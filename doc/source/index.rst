@@ -3,7 +3,7 @@
    contain the root `toctree` directive.
 
 Welcome to SimPhoNy metaparser's documentation!
-=============================================
+===============================================
 
 .. include:: ../../README.rst
 
