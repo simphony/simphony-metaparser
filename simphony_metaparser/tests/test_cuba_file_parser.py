@@ -77,7 +77,8 @@ class TestCUBAFileParser(unittest.TestCase):
                     TEMPLATE,
                     "VERSION",
                     "VERSION: {}".format(version)))
-            with self.assertRaisesRegex(
+            with six.assertRaisesRegex(
+                    self,
                     ParsingError,
                     "The 'version' trait"):
                 self.parser.parse(content)
