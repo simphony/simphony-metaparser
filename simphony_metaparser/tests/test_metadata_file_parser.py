@@ -16,7 +16,7 @@ Resources:
   CUDS 1.0 (1st Edition): http://simphony.eu/cuds/1.0/  # does not exist
   CUDS Issues Page: https://github.com/simphony/simphony-metadata/issues
   CUDS Mailing List: simphony-ssb@fraunhofer.de
-  CUDS Reference Parser: https://github.com/simphony/simphony-metadata/cparser  # ?
+  CUDS Reference Parser: https://github.com/simphony/simphony-metadata/cparser
 
 CUDS_KEYS:
   CUDS_ITEM:
@@ -58,7 +58,7 @@ CUDS_KEYS:
     parent: CUBA.COMPUTATIONAL_MODEL
 
   MODEL_EQUATION:
-    definition: The model equations are represented by all physics equations and material relations according to the RoMM
+    definition: The model equations are represented by all physics equations
     models: []
     parent: CUBA.CUDS_COMPONENT
     variables: []
