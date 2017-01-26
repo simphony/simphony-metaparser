@@ -7,6 +7,14 @@ from .flags import NoDefault
 from .exceptions import ParsingError
 
 
+_RECOGNIZED_KEYS_CUBA_ENTRY_1_0 = {
+    "shape",
+    "length",
+    "definition",
+    "type"
+}
+
+
 def parse_header_info(data):
     """Parse and returns the FileHeaderInfo node.
 
@@ -68,6 +76,16 @@ def parse_cuba_entry(name, data):
     """
     if data is None:
         data = {}
+        # Check if there are unrecognized keys in the entry
+
+    unrecognized_keys = set(data.keys()).difference(
+        _RECOGNIZED_KEYS_CUBA_ENTRY_1_0)
+
+    if len(unrecognized_keys) != 0:
+        raise ParsingError(
+            "Unrecognized key(s) in CUBA entry {}: {}".format(
+                name, unrecognized_keys)
+        )
 
     try:
         type_ = data["type"]
@@ -102,7 +120,7 @@ def parse_cuds_entry(name, data):
 
     Returns
     -------
-    simphony_metaedit.parsers.nodes.CUDSEntry
+    CUDSEntry
     """
 
     if data is None:
