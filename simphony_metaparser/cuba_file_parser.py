@@ -8,6 +8,7 @@ from .exceptions import ParsingError
 
 
 class CUBAFileParser:
+
     def parse(self, file_handle):
         """Parses the content of the specified file.
         Returns a list of nodes for further processing.

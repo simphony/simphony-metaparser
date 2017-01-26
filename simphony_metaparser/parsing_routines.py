@@ -1,3 +1,4 @@
+import six
 from traits.trait_errors import TraitError
 
 from .nodes import FixedPropertyEntry, \
@@ -116,14 +117,10 @@ def parse_cuds_entry(name, data):
         raise ParsingError("CUDS entry {} has no parent information.".format(
             name))
 
-    if parent.strip() == "":
-        parent = None
-
     try:
         entry = CUDSEntry(
             name=name,
             parent=parent,
-            definition=data.get("definition", ""),
         )
     except TraitError as e:
         raise ParsingError("Unable to parse CUDS entry {}: {}".format(
@@ -231,8 +228,7 @@ def parse_shape(shape_spec):
     """
     if shape_spec is None:
         return [1]
-
-    elif isinstance(shape_spec, (str, unicode)):
+    elif isinstance(shape_spec, six.string_types):
         shape_spec = shape_spec.strip()
         if shape_spec[0] not in "[(" or shape_spec[-1] not in "])":
             raise ValueError("Shape specification {} not "
@@ -247,18 +243,18 @@ def parse_shape(shape_spec):
             else:
                 return int(el)
 
-        shape = map(transform, elems)
+        shape = list(map(transform, elems))
     else:
         shape = shape_spec
 
     if not isinstance(shape, list):
         raise TypeError(
-            "Shape not compliant with required type. Got {}".format(
-                shape_spec
+            "Shape not compliant with required type. Got {}, {}".format(
+                type(shape), shape
             ))
 
     if not all([x is None or x > 0 for x in shape]):
         raise ValueError("shape must be a list of positive or None values. "
                          "Got {}".format(shape))
 
-    return shape
+    return list(shape)

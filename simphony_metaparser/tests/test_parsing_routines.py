@@ -72,7 +72,7 @@ class TestParsingRoutines(unittest.TestCase):
 
     def test_check_parent_parsing(self):
         res = parse_cuds_entry("MIXTURE_MODEL", {
-            "parent": "",
+            "parent": None,
         })
 
         self.assertEqual(res.parent, None)
