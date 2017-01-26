@@ -3,7 +3,7 @@ from traits.api import (
     Either, Any, Instance, Property)
 from traits.trait_types import This
 
-from simphony_metaedit.parsers.utils import with_cuba_prefix
+from .utils import with_cuba_prefix
 from .flags import NoDefault
 
 

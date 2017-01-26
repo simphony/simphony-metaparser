@@ -1,10 +1,10 @@
 import os
 import unittest
-from simphony_metaedit.parsers.metadata_file_parser import (
+from simphony_metaparser.metadata_file_parser import (
     MetadataFileParser)
 
 
-class TestYamlDirParser(unittest.TestCase):
+class TestMetadataFileParser(unittest.TestCase):
     def setUp(self):
         self.yamldir = os.path.join(
             os.path.dirname(__file__),

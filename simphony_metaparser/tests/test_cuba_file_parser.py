@@ -1,9 +1,8 @@
 import os
 import unittest
 
-import simphony_metaedit.parsers.nodes
-from simphony_metaedit import nodes
-from simphony_metaedit.parsers.cuba_file_parser import (
+from simphony_metaparser import nodes
+from simphony_metaparser.cuba_file_parser import (
     CUBAFileParser)
 
 
@@ -22,7 +21,7 @@ class TestCUBAFileParser(unittest.TestCase):
 
         header = file.header
         self.assertIsInstance(header,
-                              simphony_metaedit.parsers.nodes.FileHeaderInfo)
+                              nodes.FileHeaderInfo)
         self.assertEqual(header.version, "1.0")
         self.assertEqual(header.type, "CUBA")
 

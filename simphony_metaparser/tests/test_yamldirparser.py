@@ -1,8 +1,8 @@
 import os
 import unittest
 
-from simphony_metaedit.parsers.exceptions import ParsingError
-from simphony_metaedit.parsers.yamldirparser import YamlDirParser, \
+from simphony_metaparser.exceptions import ParsingError
+from simphony_metaparser.yamldirparser import YamlDirParser, \
     check_name_clash
 
 
