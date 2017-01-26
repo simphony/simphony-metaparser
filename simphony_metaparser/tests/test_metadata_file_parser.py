@@ -22,7 +22,7 @@ CUDS_KEYS:
   CUDS_ITEM:
     definition: Root of all CUDS types
     parent:
-    CUBA.UUID:
+    CUBA.t UUID:
       scope: CUBA.SYSTEM
     data:
       scope: CUBA.SYSTEM

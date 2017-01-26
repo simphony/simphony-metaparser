@@ -176,5 +176,3 @@ class TestCUBAFileParser(unittest.TestCase):
 """)
         with six.assertRaisesRegex(self, ParsingError, "Unrecognized key"):
             self.parser.parse(content)
-
-
