@@ -32,6 +32,7 @@ setup(
     long_description=README_TEXT,
     install_requires=[
         'traits~=4.6',
-        'pyyaml~=3.12'],
+        'pyyaml~=3.12',
+        'six~=1.10'],
     packages=find_packages(),
 )
