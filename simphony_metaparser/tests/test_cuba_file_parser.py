@@ -3,7 +3,7 @@ import unittest
 
 from simphony_metaparser.cuba_file_parser import CUBAFileParser
 from simphony_metaparser.exceptions import ParsingError
-from six import StringIO
+import six
 
 # Basic, working document that complies with the spec
 TEMPLATE = """---
@@ -48,7 +48,7 @@ class TestCUBAFileParser(unittest.TestCase):
         self.assertEqual(len(root.entries), 6)
 
     def test_trivial_content(self):
-        content = StringIO(TEMPLATE)
+        content = six.StringIO(TEMPLATE)
         root = self.parser.parse(content)
 
         self.assertEqual(root.header.version, "1.0")
@@ -64,14 +64,15 @@ class TestCUBAFileParser(unittest.TestCase):
         self.assertEqual(root.entries["MATRIX"].shape, [3, 3])
 
     def test_parse_incorrect_version(self):
-        content = StringIO(
+        content = six.StringIO(
             _change_lines_starting_with(TEMPLATE, "VERSION", ""))
-        with self.assertRaisesRegex(ParsingError,
-                                    "find file format version specifier"):
+        with six.assertRaisesRegex(self,
+                                   ParsingError,
+                                   "find file format version specifier"):
             self.parser.parse(content)
 
         for version in ["hello", "[]"]:
-            content = StringIO(
+            content = six.StringIO(
                 _change_lines_starting_with(
                     TEMPLATE,
                     "VERSION",
@@ -82,89 +83,94 @@ class TestCUBAFileParser(unittest.TestCase):
                 self.parser.parse(content)
 
         for version in ["1.1", "0.9"]:
-            content = StringIO(
+            content = six.StringIO(
                 _change_lines_starting_with(
                     TEMPLATE,
                     "VERSION",
                     "VERSION: {}".format(version)))
-            with self.assertRaisesRegex(ParsingError,
-                                        "Unable to parse file version"):
+            with six.assertRaisesRegex(self,
+                                       ParsingError,
+                                       "Unable to parse file version"):
                 self.parser.parse(content)
 
     def test_parse_incorrect_cuba_marker(self):
-        content = StringIO(
+        content = six.StringIO(
             _change_lines_starting_with(TEMPLATE, "CUBA:", "")
         )
 
-        with self.assertRaisesRegex(ParsingError,
-                                    "Unable to find file type "
-                                    "specification"):
+        with six.assertRaisesRegex(self,
+                                   ParsingError,
+                                   "Unable to find file type "
+                                   "specification"):
             self.parser.parse(content)
 
     def test_no_cuba_keys(self):
-        content = StringIO(_extract_lines(TEMPLATE, 0, 7))
-        with self.assertRaisesRegex(ParsingError, "Missing key CUBA_KEYS"):
+        content = six.StringIO(_extract_lines(TEMPLATE, 0, 7))
+        with six.assertRaisesRegex(self, ParsingError,
+                                   "Missing key CUBA_KEYS"):
             self.parser.parse(content)
 
     def test_unrecognized_root_key(self):
-        content = StringIO(TEMPLATE+"\nunrecognized: 1\n")
-        with self.assertRaisesRegex(ParsingError, "Unrecognized key"):
+        content = six.StringIO(TEMPLATE+"\nunrecognized: 1\n")
+        with six.assertRaisesRegex(self, ParsingError, "Unrecognized key"):
             self.parser.parse(content)
 
     def test_invalid_cuba_name(self):
-        content = StringIO(
+        content = six.StringIO(
             TEMPLATE+"""
     whatever:
         definition: Position of a point or node or atom
         shape: [3]
         type: double
 """)
-        with self.assertRaisesRegex(ParsingError, "matching the pattern"):
+        with six.assertRaisesRegex(self, ParsingError, "matching the pattern"):
             self.parser.parse(content)
 
     def test_no_type(self):
-        content = StringIO(
+        content = six.StringIO(
             TEMPLATE+"""
     WHATEVER:
         definition: Position of a point or node or atom
         shape: [3]
 """)
-        with self.assertRaisesRegex(ParsingError, "Missing type"):
+        with six.assertRaisesRegex(self, ParsingError, "Missing type"):
             self.parser.parse(content)
 
     def test_unrecognized_type(self):
-        content = StringIO(
+        content = six.StringIO(
             TEMPLATE+"""
     WHATEVER:
         definition: Position of a point or node or atom
         shape: [3]
         type: floatingpoint
 """)
-        with self.assertRaisesRegex(ParsingError,
-                                    "but a value of 'floatingpoint'"):
+        with six.assertRaisesRegex(self,
+                                   ParsingError,
+                                   "but a value of 'floatingpoint'"):
             self.parser.parse(content)
 
     def test_length_in_non_string(self):
-        content = StringIO(
+        content = six.StringIO(
             TEMPLATE+"""
     WHATEVER:
         definition: Position of a point or node or atom
         type: integer
         length: 5
 """)
-        with self.assertRaisesRegex(ParsingError,
-                                    "not a string, and length must be None"):
+        with six.assertRaisesRegex(self,
+                                   ParsingError,
+                                   "not a string, and length must be None"):
             self.parser.parse(content)
 
     def test_unrecognized_key_in_entry(self):
-        content = StringIO(
+        content = six.StringIO(
             TEMPLATE+"""
     WHATEVER:
         definition: Position of a point or node or atom
         unrecognized: XXX
         type: integer
 """)
-        with self.assertRaisesRegex(ParsingError, "Unrecognized key"):
+        with six.assertRaisesRegex(self, ParsingError, "Unrecognized key"):
             self.parser.parse(content)
 
 
