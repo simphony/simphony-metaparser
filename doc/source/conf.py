@@ -21,40 +21,11 @@ def _warn_node(self, msg, node, **kwargs):
 
 
 sphinx.environment.BuildEnvironment.warn_node = _warn_node
-
-def mock_modules():
-    import sys
-
-    from mock import MagicMock
-
-    try:
-        import tables
-    except ImportError:
-        MOCK_MODULES = ['tables']
-    else:
-        MOCK_MODULES = []
-
-    try:
-        import numpy
-    except ImportError:
-        MOCK_MODULES.append('numpy')
-
-    class Mock(MagicMock):
-
-        @classmethod
-        def __getattr__(cls, name):
-            return Mock()
-
-        def __call__(self, *args, **kwards):
-            return Mock()
-
-    sys.modules.update((mod_name, Mock()) for mod_name in MOCK_MODULES)
-    print 'mocking {}'.format(MOCK_MODULES)
+import sys
+sys.path.insert(0, "..")
 
 # -- General configuration ------------------------------------------------
 
-# check and mock missing modules
-mock_modules()
 
 # If your documentation needs a minimal Sphinx version, state it here.
 # needs_sphinx = '1.2.3'
