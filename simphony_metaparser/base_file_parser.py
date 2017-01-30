@@ -26,15 +26,9 @@ class BaseFileParser(object):
             self.entry_key()
         }
 
-    @abc.abstractmethod
-    def expected_type(self):
-        """The expected type in the header.
-        Must return "CUBA" or "CUDS"
-        """
-
     def parse(self, file_handle):
         """Parses the content of the specified file.
-        Returns a list of nodes for further processing.
+        Returns a File node for further processing.
 
         Parameters
         ----------
@@ -43,7 +37,7 @@ class BaseFileParser(object):
 
         Returns
         -------
-        list of raw CUBA nodes.
+        A nodes.FileNode hierarchy
         """
         try:
             data = yaml.safe_load(file_handle)
@@ -92,6 +86,12 @@ class BaseFileParser(object):
         file_node.entries = entries
 
         return file_node
+
+    @abc.abstractmethod
+    def expected_type(self):
+        """The expected type in the header.
+        Must return "CUBA" or "CUDS"
+        """
 
     @abc.abstractmethod
     def parse_entry(self, name, data):

@@ -177,6 +177,11 @@ pseudoxml:
 	@echo
 	@echo "Build finished. The pseudo-XML files are in $(BUILDDIR)/pseudoxml."
 
+.PHONY: apidoc
+apidoc:
+	-rm -rf source/api/
+	sphinx-apidoc -o source/api ../simphony_metaparser
+
 uml:
 	java -jar plantuml.jar "source/uml/" "source/images"
 	mv source/uml/*.png source/images
