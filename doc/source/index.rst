@@ -13,6 +13,7 @@ User Manual
 .. toctree::
    :maxdepth: 1
 
+   introduction
    License <license>
 
 API Reference
@@ -21,4 +22,4 @@ API Reference
 .. toctree::
    :maxdepth: 2
 
-   api/index
+   api/modules
