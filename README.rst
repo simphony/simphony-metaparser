@@ -1,7 +1,7 @@
 Simphony-metaparser
 ===================
 
-A parser and writer for SimPhoNy metadata file, available at https://github.com/simphony/simphony-metadata
+A parser and writer library for SimPhoNy metadata files, available at https://github.com/simphony/simphony-metadata
 
 Directory structure
 -------------------
