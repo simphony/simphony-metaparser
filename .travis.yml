@@ -32,6 +32,7 @@ script:
     - flake8 .
     - python -m unittest discover
     - coverage run -m unittest discover -v
+    - echo $TRAVIS_PYTHON_VERSION
     - if [ $TRAVIS_PYTHON_VERSION == "2.7" ]; then pip install -r doc_requirements.txt; sphinx-build -W doc/source doc/build/sphinx; done
 
 after_success:
