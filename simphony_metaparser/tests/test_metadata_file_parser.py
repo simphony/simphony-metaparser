@@ -80,7 +80,7 @@ class TestMetadataFileParser(unittest.TestCase):
     def test_parse_metadata_file(self):
         with open(os.path.join(self.yamldir, "simphony_metadata.yml")) as f:
             file = self.parser.parse(f)
-        self.assertEqual(len(file.entries), 99)
+        self.assertEqual(len(file.entries), 100)
 
     def test_parsing_template(self):
         content = six.StringIO(TEMPLATE)
