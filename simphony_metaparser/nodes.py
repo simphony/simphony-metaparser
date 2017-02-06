@@ -61,7 +61,7 @@ class FixedPropertyEntry(HasStrictTraits):
     name = FixedPropertyKey()
     scope = Scope()
     default = Property()
-    _default = Any(NoDefault())
+    _default = Any(NoDefault)
 
     def __init__(self, name, scope, default):
         super(FixedPropertyEntry, self).__init__()
@@ -92,7 +92,7 @@ class VariablePropertyEntry(HasStrictTraits):
     default = Property()
     shape = List(Either(Int, None))
 
-    _default = Any(NoDefault())
+    _default = Any(NoDefault)
 
     def __init__(self, name, scope, shape, default):
         super(VariablePropertyEntry, self).__init__()
