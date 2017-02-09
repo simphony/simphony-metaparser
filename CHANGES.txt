@@ -2,8 +2,12 @@ Changelog
 =========
 
 Release 0.2.0.dev0
+------------------
 
 * Added `traverse_to_root` routine (#11)
+* Changed API for datamodel. New high level nodes 
+  FixedProperty and VariableProperty also provide backreference
+  to their containing CUDSItem
 
 Release 0.1.0
 -------------
