@@ -27,14 +27,6 @@ simphony_metaparser.tests.test_metadata_file_parser module
     :undoc-members:
     :show-inheritance:
 
-simphony_metaparser.tests.test_nodes module
--------------------------------------------
-
-.. automodule:: simphony_metaparser.tests.test_nodes
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
 simphony_metaparser.tests.test_parsing_routines module
 ------------------------------------------------------
 
