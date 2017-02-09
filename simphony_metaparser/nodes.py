@@ -2,7 +2,6 @@ from traits.api import (
     HasStrictTraits, TraitError, String, Enum, Str, Dict, List, Int,
     Either, Any, Instance, Property)
 
-from .utils import with_cuba_prefix
 from .flags import NoDefault
 
 
