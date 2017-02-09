@@ -26,7 +26,7 @@ class TestYamlDirParser(unittest.TestCase):
         self.assertEqual(root_cuds.name, "CUBA.CUDS_ITEM")
         self.assertIsNone(root_cuds.parent)
         self.assertEqual(len(root_cuds.children), 7)
-        self.assertEqual(len(root_cuds.property_entries), 3)
+        self.assertEqual(len(root_cuds.properties), 3)
 
         for child in root_cuds.children:
             self.assertIs(child.parent, root_cuds)

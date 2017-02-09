@@ -91,7 +91,6 @@ class VariablePropertyEntry(HasStrictTraits):
     scope = Scope()
     default = Property()
     shape = List(Either(Int, None))
-
     _default = Any(NoDefault)
 
     def __init__(self, name, scope, shape, default):
@@ -152,6 +151,18 @@ class DirectoryRoot(HasStrictTraits):
 # appropriate
 # --------------------------------------------------
 
+class FixedProperty(FixedPropertyEntry):
+    """High level node representing a fixed property, but also
+    keeps a back reference to its holding CUDSItem node"""
+    item = Instance('CUDSItem')
+
+
+class VariableProperty(VariablePropertyEntry):
+    """High level node representing a variable property, but also
+    keeps a back reference to its holding CUDSItem node"""
+    item = Instance('CUDSItem')
+
+
 class CUDSItem(HasStrictTraits):
     """A high level node representing a concept that has
     dependencies, an identity and properties.
@@ -159,46 +170,13 @@ class CUDSItem(HasStrictTraits):
     name = QualifiedCUBAKey()
     parent = Instance("CUDSItem")
     children = List(Instance("CUDSItem"))
-    property_entries = Dict(Str,
-                            Either(FixedPropertyEntry, VariablePropertyEntry))
-
-    @classmethod
-    def from_cuds_entry(cls, cuds_entry):
-        if not isinstance(cuds_entry, CUDSEntry):
-            raise TypeError("cuba_entry must be a CUBAEntry")
-
-        d = {}
-
-        for name in cuds_entry.editable_traits():
-            value = getattr(cuds_entry, name)
-            if name == "name":
-                value = with_cuba_prefix(value)
-            elif name == "parent":
-                continue
-
-            d[name] = value
-
-        return cls(**d)
+    properties = Dict(Str,
+                      Either(FixedProperty, VariableProperty))
 
 
 class CUBADataType(CUBAEntry):
     """A high level node representing a value with no dependencies."""
     name = QualifiedCUBAKey()
-
-    @classmethod
-    def from_cuba_entry(cls, cuba_entry):
-        if not isinstance(cuba_entry, CUBAEntry):
-            raise TypeError("cuba_entry must be a CUBAEntry")
-
-        d = {}
-
-        for name in cuba_entry.editable_traits():
-            value = getattr(cuba_entry, name)
-            if name == "name":
-                value = with_cuba_prefix(value)
-            d[name] = value
-
-        return cls(**d)
 
 
 class Ontology(HasStrictTraits):

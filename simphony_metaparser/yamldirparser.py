@@ -3,7 +3,8 @@ import os
 from simphony_metaparser.utils import with_cuba_prefix
 from . import utils
 from .nodes import CUBADataType, CUDSItem, \
-    VariablePropertyEntry, FixedPropertyEntry
+    VariablePropertyEntry, FixedPropertyEntry, CUBAEntry, CUDSEntry, \
+    FixedProperty, VariableProperty
 from .cuba_file_parser import CUBAFileParser
 from .exceptions import ParsingError
 from .metadata_file_parser import MetadataFileParser
@@ -98,12 +99,15 @@ class YamlDirParser:
 
 
 def build_symbol_tables(parsed_cuba, parsed_metadata):
-    """Extracts the relevant symbols and their correspondence from the
-    parsed information """
+    """Builds a symbol table, extracting the relevant symbols and their
+    correspondence from the parsed information.
+    Note that the symbol table is populated by high level nodes, but
+    their linkage won't be done until later, when all nodes have been
+    created."""
     cuba_symtable = {}
     # Extract the data types
     for entry in parsed_cuba.entries.values():
-        data_type = CUBADataType.from_cuba_entry(entry)
+        data_type = cuba_data_type_from_cuba_entry(entry)
         cuba_symtable[data_type.name] = data_type
 
     # Extract the CUDS Item, still not linked
@@ -113,13 +117,14 @@ def build_symbol_tables(parsed_cuba, parsed_metadata):
         if entry.name in cuba_symtable:
             raise ParsingError("Common key found between CUBA and "
                                "CUDS items: {}".format(entry.name))
-        item = CUDSItem.from_cuds_entry(entry)
+        item = cuds_item_from_cuds_entry(entry)
         cuds_symtable[item.name] = item
 
     return cuba_symtable, cuds_symtable
 
 
 def check_item_tree(ontology, cuba_symtable, cuds_symtable):
+    """Performs a check of the whole item tree."""
     # we need a stack for frames to check the consistency across the
     # hierarchy of names. Each stack frame is a tuple of two sets,
     # containing the found property names. The first set contains fixed
@@ -141,7 +146,7 @@ def check_item_tree(ontology, cuba_symtable, cuds_symtable):
         stack.append(cur_frame)
 
         # collect the new names
-        for prop_name, prop in item.property_entries.items():
+        for prop_name, prop in item.properties.items():
             if isinstance(prop, VariablePropertyEntry):
                 # Check if the current variable properties are referring to
                 # something that is undefined
@@ -172,6 +177,7 @@ def check_item_tree(ontology, cuba_symtable, cuds_symtable):
 
 
 def check_name_clash(item_name, fixed_names, variable_names):
+    """Checks name clashes between properties"""
     # not using intersection. We want to return a meaningful message.
     for name in variable_names:
         transformed_name = utils.cuba_key_to_property_name(name)
@@ -182,3 +188,69 @@ def check_name_clash(item_name, fixed_names, variable_names):
                 "clashes with fixed property {} in "
                 "its hierarchy".format(
                     name, item_name, transformed_name))
+
+
+def cuds_item_from_cuds_entry(cuds_entry):
+    """Converts a CUDSEntry into a CUDSItem node,
+    adjusting for the differences in data representation.
+    Note that the resulting CUDSItem is not linked yet,
+    hence its parent is None"""
+    if not isinstance(cuds_entry, CUDSEntry):
+        raise TypeError("cuds_entry must be a CUDSEntry")
+
+    item = CUDSItem(
+        name=with_cuba_prefix(cuds_entry.name),
+    )
+
+    properties = {}
+    for prop_entry in cuds_entry.property_entries.values():
+        prop = property_entry_to_property(prop_entry, item)
+        properties[prop.name] = prop
+
+    item.properties = properties
+    return item
+
+
+def property_entry_to_property(prop_entry, item):
+    """Converts a PropertyEntry to a Property, copying the
+    relevant information. It also performs linkage against the
+    containing item.
+    """
+    if isinstance(prop_entry, FixedPropertyEntry):
+        prop = FixedProperty(name=prop_entry.name,
+                             scope=prop_entry.scope,
+                             default=prop_entry.default)
+    elif isinstance(prop_entry, VariablePropertyEntry):
+        prop = VariableProperty(name=prop_entry.name,
+                                scope=prop_entry.scope,
+                                shape=prop_entry.shape,
+                                default=prop_entry.default
+                                )
+    else:
+        raise TypeError("Unrecognised prop_entry type")
+
+    prop.item = item
+    return prop
+
+
+def cuba_data_type_from_cuba_entry(cuba_entry):
+    """Converts the CUBAEntry into a CUBADataType node,
+    adjusting for the differences in data representation and
+    enforced format."""
+    if not isinstance(cuba_entry, CUBAEntry):
+        raise TypeError("cuba_entry must be a CUBAEntry")
+
+    d = traits_as_dict(cuba_entry)
+    d["name"] = with_cuba_prefix(d["name"])
+
+    return CUBADataType(**d)
+
+
+def traits_as_dict(instance):
+    """Converts the traits into a dictionary keyed over the trait names."""
+    d = {}
+    for name in instance.editable_traits():
+        value = getattr(instance, name)
+        d[name] = value
+
+    return d
