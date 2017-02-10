@@ -2,9 +2,10 @@ import os
 import unittest
 
 from simphony_metaparser.exceptions import ParsingError
-from simphony_metaparser.nodes import Ontology
-from simphony_metaparser.yamldirparser import \
-    check_name_clash, YamlDirParser
+from simphony_metaparser.nodes import Ontology, CUDSItem
+from simphony_metaparser.yamldirparser import (
+    check_name_clash, YamlDirParser, cuba_data_type_from_cuba_entry,
+    property_entry_to_property, cuds_item_from_cuds_entry)
 
 
 class TestYamlDirParser(unittest.TestCase):
@@ -26,7 +27,7 @@ class TestYamlDirParser(unittest.TestCase):
         self.assertEqual(root_cuds.name, "CUBA.CUDS_ITEM")
         self.assertIsNone(root_cuds.parent)
         self.assertEqual(len(root_cuds.children), 7)
-        self.assertEqual(len(root_cuds.property_entries), 3)
+        self.assertEqual(len(root_cuds.properties), 3)
 
         for child in root_cuds.children:
             self.assertIs(child.parent, root_cuds)
@@ -36,3 +37,13 @@ class TestYamlDirParser(unittest.TestCase):
             check_name_clash("hello", set(['what']), set(["CUBA.WHAT"]))
 
         check_name_clash("hello", set(["one"]), set(["CUBA.TWO"]))
+
+    def test_conversion_routines_fail_for_incorrect_data(self):
+        with self.assertRaises(TypeError):
+            cuba_data_type_from_cuba_entry("foo")
+
+        with self.assertRaises(TypeError):
+            property_entry_to_property("foo", CUDSItem())
+
+        with self.assertRaises(TypeError):
+            cuds_item_from_cuds_entry("foo")
