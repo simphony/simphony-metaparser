@@ -62,8 +62,8 @@ class FixedPropertyEntry(HasStrictTraits):
     default = Property()
     _default = Any(NoDefault)
 
-    def __init__(self, name, scope, default):
-        super(FixedPropertyEntry, self).__init__()
+    def __init__(self, name, scope, default, *args, **kwargs):
+        super(FixedPropertyEntry, self).__init__(*args, **kwargs)
         self.name = name
         self.scope = scope
         self.default = default
@@ -92,8 +92,8 @@ class VariablePropertyEntry(HasStrictTraits):
     shape = List(Either(Int, None))
     _default = Any(NoDefault)
 
-    def __init__(self, name, scope, shape, default):
-        super(VariablePropertyEntry, self).__init__()
+    def __init__(self, name, scope, shape, default, *args, **kwargs):
+        super(VariablePropertyEntry, self).__init__(*args, **kwargs)
         self.name = name
         self.scope = scope
         self.shape = shape
