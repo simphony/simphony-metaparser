@@ -31,7 +31,7 @@ class CUBAEntry(HasStrictTraits):
 
     definition = Str()
     shape = List(Int)
-    length = Property()
+    length = Property(depends_on="_length")
     _length = Either(None, Int)
 
     def __init__(self, name, type, *args, **kwargs):
@@ -59,7 +59,7 @@ class FixedPropertyEntry(HasStrictTraits):
     """Represents the raw data of a property before the linkage step"""
     name = FixedPropertyKey()
     scope = Scope()
-    default = Property()
+    default = Property(depends_on="_default")
     _default = Any(NoDefault)
 
     def __init__(self, name, scope, default, *args, **kwargs):
@@ -88,7 +88,7 @@ class VariablePropertyEntry(HasStrictTraits):
     """Represents the raw data of a property before the linkage step"""
     name = QualifiedCUBAKey()
     scope = Scope()
-    default = Property()
+    default = Property(depends_on="_default")
     shape = List(Either(Int, None))
     _default = Any(NoDefault)
 
