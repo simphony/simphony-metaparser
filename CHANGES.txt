@@ -1,9 +1,13 @@
 Changelog
 =========
 
-Release 0.2.0.dev0
-------------------
+Release 0.2.0
+-------------
 
+* Fix: added missing depends_on to traits properties (#16)
+* Fix: fixed incorrect API for properties (#15)
+* Added reverse references from properties to item (#14)
+* NoDefault is now an instance so that it plays nice with Traits (#13)
 * Added `traverse_to_root` routine (#11)
 * Changed API for datamodel. New high level nodes 
   FixedProperty and VariableProperty also provide backreference
