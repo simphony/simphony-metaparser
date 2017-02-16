@@ -12,7 +12,9 @@ from . import nodes
 
 
 class YamlDirParser:
-    """Parser for the current format of metadata as two files in a directory"""
+    """Parser for the current format of metadata as two files in a directory.
+    The file format is specified in simphony-metadata documentation.
+    """
 
     def parse(self, directory):
         """Parses a directory containing file and extracts the tree.

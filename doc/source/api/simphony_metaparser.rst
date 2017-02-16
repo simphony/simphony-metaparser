@@ -83,6 +83,14 @@ simphony_metaparser.utils module
     :undoc-members:
     :show-inheritance:
 
+simphony_metaparser.version module
+----------------------------------
+
+.. automodule:: simphony_metaparser.version
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 simphony_metaparser.yamldirparser module
 ----------------------------------------
 
