@@ -14,7 +14,7 @@ class BaseFileParser(object):
     """
     def supported_versions(self):
         """Returns a list of the supported file versions"""
-        return ["1.0"]
+        return ["1.0", "1.1"]
 
     def recognized_root_keys(self, version):
         """Returns the recognized keys for a given version, as a set"""

@@ -27,7 +27,7 @@ class FileHeaderInfo(HasStrictTraits):
 class CUBAEntry(HasStrictTraits):
     """Represents a CUBA entry"""
     name = CUBAKey()
-    type = Enum('string', 'double', 'integer', 'boolean')
+    type = Enum('string', 'double', 'integer', 'boolean', 'none')
 
     definition = Str()
     shape = List(Int)

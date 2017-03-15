@@ -1,6 +1,10 @@
 import unittest
 
-from simphony_metaparser.nodes import CUDSItem, FixedProperty, VariableProperty
+from simphony_metaparser.nodes import (
+    CUDSItem,
+    CUBAEntry,
+    FixedProperty,
+    VariableProperty)
 from traits.api import TraitError
 
 
@@ -44,3 +48,8 @@ class TestNodes(unittest.TestCase):
                 default=[1],
                 item=item,
             )
+
+    def test_none_option(self):
+        """Test None as introduced by specs 1.1"""
+        entry = CUBAEntry("CUBA.NONE", "none")
+        self.assertEqual(entry.type, "none")
