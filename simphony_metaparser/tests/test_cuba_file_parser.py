@@ -86,7 +86,7 @@ class TestCUBAFileParser(unittest.TestCase):
                     "The 'version' trait"):
                 self.parser.parse(content)
 
-        for version in ["1.1", "0.9"]:
+        for version in ["2.0", "0.9"]:
             content = six.StringIO(
                 change_lines_starting_with(
                     TEMPLATE,

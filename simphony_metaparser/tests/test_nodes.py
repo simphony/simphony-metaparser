@@ -51,5 +51,5 @@ class TestNodes(unittest.TestCase):
 
     def test_none_option(self):
         """Test None as introduced by specs 1.1"""
-        entry = CUBAEntry("CUBA.NONE", "none")
+        entry = CUBAEntry("NONE", "none")
         self.assertEqual(entry.type, "none")
