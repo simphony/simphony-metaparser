@@ -31,8 +31,8 @@ setup(
     description='Parser and writer for simphony-metadata file',
     long_description=README_TEXT,
     install_requires=[
-        'traits~=4.6',
-        'pyyaml~=3.12',
-        'six~=1.10'],
+        'traits>=4.6',
+        'pyyaml>=3.11',
+        'six>=1.10'],
     packages=find_packages(),
 )
